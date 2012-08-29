@@ -1,0 +1,17 @@
+{% extends "webdiff.html" %}
+
+
+{% block content_options %}
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" name="filename" size='24' value='default_name.diff'>
+	<button type="submit" name='download_button'>Download!</button>
+{% endblock %}
+
+
+{% block content %}
+    <div class='output_area'>
+        <div id='combined_dif'>
+        {{diff|safe}}
+        </div>
+    </div>
+{% endblock %}

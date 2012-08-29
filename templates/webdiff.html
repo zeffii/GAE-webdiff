@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <link rel="stylesheet" href="/static/main.css" />
+<head>
+
+<body>
+    <img class='title_image' src='/static/images/webdiff_small.png'>
+<span class='main_content'>
+
+    <form method="post">
+        <div class='input_areas'>
+        
+<textarea type="text" name="from" rows="20" cols="80">{{content_a}}</textarea>
+
+<textarea type="text" name="to" rows="20" cols="80">{{content_b}}</textarea>
+
+        </div>
+
+        <div class='button_area'>
+            <button type="submit" name='comparer_button'>Compare!</button>{% block content_options %}{% endblock %}
+        </div>
+    </form>
+
+    {% block content %}{% endblock %}
+    
+</span>
+
+
+</body>
+</html>

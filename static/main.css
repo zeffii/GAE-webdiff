@@ -1,0 +1,107 @@
+body {
+    background: #fefefe;
+}
+
+.main_content {
+    display: inline-block;
+    width: auto;
+}
+
+.title_image {
+    margin: 10px 0 0 50px;
+    float: left;
+}
+
+textarea {
+    padding:0;
+    margin:0;
+    border: 1px solid #e0e0e0;
+}
+
+.input_areas {
+    float: left;
+
+    background: #e9e9e9; /* for non-css3 browsers */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#eaeaea'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#eaeaea)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #f7f7f7,  #eaeaea); /* for firefox 3.6+ */ 
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+
+    border: 1px solid #e0e0e0;    
+
+    padding: 20px;
+    margin: 20px;
+}
+
+.output_area {
+    clear:both;
+
+    background: #e9e9e9; /* for non-css3 browsers */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f7f7f7', endColorstr='#eaeaea'); /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7), to(#eaeaea)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #f7f7f7,  #eaeaea); /* for firefox 3.6+ */ 
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+
+    border: 1px solid #e0e0e0;    
+
+    padding: 20px;
+    margin: 20px;    
+}
+
+.line_removed {
+    background-color: #FFD3C7;
+}
+
+.line_added {
+    background: #9fc;
+}
+
+.line_comment {
+    color: red;
+    font-weight: bold;
+    background: lightyellow;
+}
+
+.button_area {
+    clear: both;
+    text-align: center;
+
+}
+
+#combined_dif {
+    background-color: #fff;
+        
+}
+
+table.diff {
+    font-family:Courier; 
+    border: 1px solid #e0e0e0;   
+}
+
+.diff_header {
+    background-color:#e0e0e0;
+}
+
+td.diff_header {
+    text-align:right;
+}
+
+.diff_next {
+    background-color:#c0c0c0;
+    width: 1em;
+}
+
+.diff_add {
+    background-color:#aaffaa;
+}
+
+.diff_chg {
+    background-color:#ffff77;
+}
+
+.diff_sub {
+    background-color:#ffaaaa;
+}
+
