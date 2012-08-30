@@ -7,10 +7,10 @@ Milestones
 [x] track download button event
 [x] make diff downloadable
 [x] autofill from gist combo ( webdiff/gist_id1-gist_id2 )
+[x] deal with multifile gists somehow ( must gather examples )
 [ ] accept dragged data
 [ ] permalink, for sharing
 [ ] implement additional origins beside gists
-[ ] deal with multifile gists somehow ( must gather examples )
 """
 
 import re
@@ -32,7 +32,6 @@ def get_raw_url_from_gist_id(gist_id, gist_name_propper=None):
     wfile = json.JSONDecoder()
     wjson = wfile.decode(found_json)
 
-    # 'files' may contain several - this will mess up gist name.
     files_flag = 'files'
     file_names = wjson[files_flag].keys()
 
@@ -147,12 +146,12 @@ class MultiFileGist(PageHandler):
         gist_a, gist_b = matched_string.split('&')
         gist_a_id, gist_a_name = gist_a.split('>')
         gist_b_id, gist_b_name = gist_b.split('>')        
-        
-        # self.response.out.write(example_data)
+
         a = get_file(gist_a_id, gist_a_name)
         b = get_file(gist_b_id, gist_b_name)
         self.render('webdiff.html', content_a=a, 
                                     content_b=b)
+
     def post(self, matched_string):
         perform_compare_or_download(self)
 
