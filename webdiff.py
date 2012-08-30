@@ -24,7 +24,7 @@ from utils import PageHandler
 from utils import logger
 
 
-def get_raw_url_from_gist_id(gist_id):
+def get_raw_url_from_gist_id(gist_id, gist_name_propper=None):
     gist_id = str(gist_id)
     url = 'https://api.github.com/gists/' + gist_id
     
@@ -35,11 +35,22 @@ def get_raw_url_from_gist_id(gist_id):
     # 'files' may contain several - this will mess up gist name.
     files_flag = 'files'
     file_names = wjson[files_flag].keys()
-    file_name = file_names[0]
+
+    logger(file_names)
+    logger(gist_name_propper)
+
+    if not gist_name_propper:
+        file_name = file_names[0]
+    else:
+        # this is a little crude.
+        if gist_name_propper.startswith('file_'):
+            gist_name_propper = gist_name_propper[5:]
+        file_name = gist_name_propper
+
     return wjson[files_flag][file_name]['raw_url']
 
-def get_file(gist_id):
-    url = get_raw_url_from_gist_id(gist_id)
+def get_file(gist_id, gist_name_propper=None):
+    url = get_raw_url_from_gist_id(gist_id, gist_name_propper)
     conn = urllib.urlopen(url)
     return conn.read()
 
@@ -103,8 +114,12 @@ def perform_compare_or_download(self):
 
 # -----------------------
 
-class Welcome(PageHandler):
+class _404(PageHandler):
+    def get(self):
+        self.redirect('/webdiff/')    
 
+
+class Welcome(PageHandler):
     def get(self):
         self.render('webdiff.html')
 
@@ -114,9 +129,7 @@ class Welcome(PageHandler):
 
 class DiffGist(PageHandler):
     """Handles the matched regex of two numbers separated by a dash.
-
     /webdiff/gistid1-gistid2   
-    where both gistids are valid gist id values.
     """
     def get(self, gist_ids):
         gist_id_a, gist_id_b = gist_ids.split('-')
@@ -129,15 +142,27 @@ class DiffGist(PageHandler):
         perform_compare_or_download(self)
 
 
-class _404(PageHandler):
-    def get(self):
-        self.redirect('/webdiff/')        
+class MultiFileGist(PageHandler):
+    def get(self, matched_string):
+        gist_a, gist_b = matched_string.split('&')
+        gist_a_id, gist_a_name = gist_a.split('>')
+        gist_b_id, gist_b_name = gist_b.split('>')        
+        
+        # self.response.out.write(example_data)
+        a = get_file(gist_a_id, gist_a_name)
+        b = get_file(gist_b_id, gist_b_name)
+        self.render('webdiff.html', content_a=a, 
+                                    content_b=b)
+    def post(self, matched_string):
+        perform_compare_or_download(self)
 
 
 
 GIST_ID_RE = '(\d{3,}-\d{3,})'
+MULTIFILE_RE = r'(\d{3,}>.*?&\d{3,}>.*?$)'
 
-app = webapp2.WSGIApplication([ ('/webdiff/' + GIST_ID_RE, DiffGist),
+app = webapp2.WSGIApplication([ ('/webdiff/' + MULTIFILE_RE, MultiFileGist),
+                                ('/webdiff/' + GIST_ID_RE, DiffGist),
                                 ('/webdiff/?', Welcome),
                                 ('/?', _404)],  debug=True)
 
